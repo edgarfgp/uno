@@ -231,13 +231,13 @@ namespace Uno.UI
 		/// Gets the orientation-dependent screen size
 		/// </summary>
 		/// <returns></returns>
-		public static CGSize GetScreenSize()
+		public static CGSize GetScreenSize(Windows.UI.Xaml.Window window = null)
 		{
 #if __IOS__
-			var width = Window.Current.NativeWindow.Frame.Width;
-			var height = Window.Current.NativeWindow.Frame.Height;
-			var windowSize = new CGSize(width, height);
-			return windowSize;
+			var nativeWindow = window?.NativeWindow ?? Windows.UI.Xaml.Window.Current.NativeWindow;
+			var nativeFrame = nativeWindow?.Frame ?? CGRect.Empty;
+
+			return new CGSize(nativeFrame.Width, nativeFrame.Height);
 #else
 			var applicationFrameSize = NSScreen.MainScreen.VisibleFrame;
 			return new CGSize(applicationFrameSize.Width, applicationFrameSize.Height);
